@@ -10,16 +10,6 @@ var PdfPrinter = require('pdfmake/src/printer');
 var printer = new PdfPrinter(fonts);
 var fs = require('fs');
 
-
-var writeToJSON = () => {
-	var json = require('./largePDFTemplate.js')
-	var translated = JSON.stringify(json);
-	fs.writeFile("./largePDFTemplate.json", translated, (err) => {
-		if (err) console.log(err);
-		console.log("Successfully Written to File.");
-	});
-};
-
 var pdfToJson = (path, fileName) => {
   fs.readFile(require.resolve(path), (err, data) => {
 		if (err) return;
@@ -33,6 +23,5 @@ var pdfToJson = (path, fileName) => {
   })
 }
 
-//writeToJSON();
 pdfToJson('./largePDFTemplate.json', 'largeJson');
 
