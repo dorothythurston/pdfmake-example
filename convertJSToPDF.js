@@ -27,6 +27,65 @@ const printer = new PdfPrinter(fonts);
 const uniqueTime = new Date().getTime();
 const jsonFilename = `./tmp/temp-${uniqueTime}.json`;
 
+const pageMargin = 30;
+const pageWidth = 595;
+
+const headerFooterObject = {
+  header: function(currentPage, pageCount) {
+    if (currentPage !== 1) {
+      return [
+        {
+          columns: [
+            { text: "Cool Project", alignment: "left", style: "pageHeader" },
+            {
+              text: "Awesome Account",
+              alignment: "center",
+              style: "pageHeader"
+            },
+            { text: "Great Company", alignment: "right", style: "pageHeader" }
+          ]
+        }
+      ];
+    }
+  },
+  footer: function(currentPage, pageCount) {
+    if (currentPage !== 1) {
+      return [
+        {
+          canvas: [
+            {
+              type: "line",
+              x1: pageMargin,
+              y1: 0,
+              x2: pageWidth - pageMargin,
+              y2: 0,
+              lineWidth: 0.5,
+              lineColor: "#BCC9D1"
+            }
+          ]
+        },
+        {
+          columns: [
+            { text: "Created with", width: "auto", style: "pageFooterLeft" },
+            {
+              text: "Autodesk® BIM 360™",
+              width: "auto",
+              style: "BimName",
+              link: "http://google.com"
+            },
+            {
+              text: "Page " + currentPage.toString() + " of " + pageCount,
+              style: "pageFooterRight",
+              width: "*",
+              alignment: "right"
+            }
+          ]
+        }
+      ];
+    }
+  }
+};
+
 const memoryUsageCheck = () => {
   const used = process.memoryUsage();
   for (let key in used) {
@@ -39,11 +98,15 @@ const memoryUsageCheck = () => {
 const jsonToPDF = (path, fileName) => {
   fs.readFile(require.resolve(path), (err, data) => {
     if (err) return;
-    const pdfFilepath = `pdfs/${fileName}-${uniqueTime}.pdf`;
+
+    const pdfPath = `pdfs/${fileName}-${uniqueTime}.pdf`;
     const docDefinition = JSON.parse(data);
+    memoryUsageCheck();
+    Object.assign(docDefinition, headerFooterObject);
+    memoryUsageCheck();
     const now = new Date();
     const pdfDoc = printer.createPdfKitDocument(docDefinition);
-    pdfDoc.pipe(fs.createWriteStream(pdfFilepath));
+    pdfDoc.pipe(fs.createWriteStream(pdfPath));
     pdfDoc.end();
     memoryUsageCheck();
     console.log(
@@ -51,7 +114,7 @@ const jsonToPDF = (path, fileName) => {
       Math.round((new Date() - now) / 1000),
       " seconds"
     );
-    console.log("Saved pdf to: ", pdfFilepath);
+    console.log(`Saved pdf here: ${pdfPath}`);
   });
 };
 
