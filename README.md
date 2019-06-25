@@ -2,12 +2,8 @@
 
 Quick toy app to show conversion...
 
-Repo includes JS version of JSON to make editing it easier. To convert JS file to JSON for usage:
+To convert a JS file to PDF use the command line args:
 ```
-  node convertJSToJSON.js
+  node convertJSToPDF.js --original './largePDFTemplate' --filename 'output'
 ```
-
-To then convert JSON to PDF
-```
-  node convertJSONToPDF.js
-```
+This will create a tmp json file in the tmp/ folder and a output.pdf file in the pdfs folder

@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "pdfmake": "^0.1.57"
+    "pdfmake": "^0.1.57",
+    "yargs": "^13.2.4"
   }
 }

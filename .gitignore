@@ -3,3 +3,6 @@ node_modules/
 
 #PDF outputs
 pdfs/
+
+#Tmp folder
+tmp/
