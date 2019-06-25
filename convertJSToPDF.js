@@ -21,8 +21,8 @@ const fonts = {
   }
 };
 const printer = new PdfPrinter(fonts);
-
-const jsonFilename = `./tmp/temp-${new Date().getTime()}.json`;
+const uniqueTime = new Date().getTime();
+const jsonFilename = `./tmp/temp-${uniqueTime}.json`;
 
 const memoryUsageCheck = () => {
   const used = process.memoryUsage();
@@ -38,7 +38,7 @@ const jsonToPDF = (path, fileName) => {
 		var docDefinition = JSON.parse(data);
 		var now = new Date();
 		var pdfDoc = printer.createPdfKitDocument(docDefinition);
-		pdfDoc.pipe(fs.createWriteStream(`pdfs/${fileName}.pdf`));
+		pdfDoc.pipe(fs.createWriteStream(`pdfs/${fileName}-${uniqueTime}.pdf`));
     pdfDoc.end();
     memoryUsageCheck();
 		console.log("JSON to PDF Conversion took ", Math.round((new Date() - now)/1000), " seconds");
