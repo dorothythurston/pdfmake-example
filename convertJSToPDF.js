@@ -34,20 +34,21 @@ const memoryUsageCheck = () => {
 const jsonToPDF = (path, fileName) => {
   fs.readFile(require.resolve(path), (err, data) => {
 		if (err) return;
-
-		var docDefinition = JSON.parse(data);
-		var now = new Date();
-		var pdfDoc = printer.createPdfKitDocument(docDefinition);
-		pdfDoc.pipe(fs.createWriteStream(`pdfs/${fileName}-${uniqueTime}.pdf`));
+    const pdfFilepath = `pdfs/${fileName}-${uniqueTime}.pdf`;
+		const docDefinition = JSON.parse(data);
+		const now = new Date();
+		const pdfDoc = printer.createPdfKitDocument(docDefinition);
+		pdfDoc.pipe(fs.createWriteStream(pdfFilepath));
     pdfDoc.end();
     memoryUsageCheck();
-		console.log("JSON to PDF Conversion took ", Math.round((new Date() - now)/1000), " seconds");
+    console.log("JSON to PDF Conversion took ", Math.round((new Date() - now)/1000), " seconds");
+    console.log("Saved pdf to: ", pdfFilepath)
   })
 };
 
 const convertJSToPDF = () => {
-	var json = require(argv.original)
-  var translated = JSON.stringify(json);
+	const json = require(argv.original)
+  const translated = JSON.stringify(json);
 
 	fs.writeFile(jsonFilename, translated, (err) => {
 		if (err) return console.log(err);
