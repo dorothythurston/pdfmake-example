@@ -6,3 +6,6 @@ pdfs/
 
 #Tmp folder
 tmp/
+
+#vscode settings
+.vscode/
